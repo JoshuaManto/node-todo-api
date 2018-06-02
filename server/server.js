@@ -12,6 +12,7 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 // URL and callback
+// ADD POST
 app.post('/todos', (req, res) =>
 {
   var todo = new Todo(
@@ -29,6 +30,7 @@ app.post('/todos', (req, res) =>
   });
 });
 
+// GET ALL TODOS
 app.get('/todos', (req, res) =>
 {
   Todo.find().then((todos) =>
@@ -44,6 +46,7 @@ app.get('/todos', (req, res) =>
 });
 
 // GET /todos/1234
+// GET TODOS BY ID
 app.get('/todos/:id', (req, res) =>
 {
   //res.send(req.params);
@@ -74,6 +77,39 @@ app.get('/todos/:id', (req, res) =>
     {
       res.status(400).send();
     });
+});
+
+// DELETE TODOS BY ID
+
+app.delete('/todos/:id', (req, res) =>
+{
+  // get the id
+  var id = req.params.id;
+
+  // validate the id - not valid return 404
+  if(!ObjectID.isValid(id))
+  {
+    return res.status(404).send();
+  }
+
+  // remove todo by id
+    // success
+      // if no doc, send 404
+      // if doc, send doc back with 200
+    // error
+      // 400 send back empty body
+    Todo.findByIdAndRemove(id).then((todo) =>
+    {
+      if(!todo)
+      {
+        return res.status(404).send();
+      }
+      res.status(200).send(todo);
+    }, (e) =>
+    {
+      res.status(400).send();
+    });
+
 });
 
 app.listen(port, () =>
