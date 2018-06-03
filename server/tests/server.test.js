@@ -100,7 +100,6 @@ describe('GET /todos/.id', () =>
       .get(`/todos/${todos[1]._id.toHexString()}`)
       .set('x-auth', users[0].tokens[0].token)
       .expect(404)
-      .expect((res) =>
       .end(done);
   });
 
@@ -169,7 +168,6 @@ describe('DELETE /todos/:id', () =>
       .delete(`/todos/${hexId}`)
       .set('x-auth', users[1].tokens[0].token)
       .expect(404)
-      .expect((res) =>
       .end((err, res) =>
       {
         if(err)
@@ -276,7 +274,6 @@ describe('PATCH /todos/:id', () =>
             completed: true
         })
       .expect(404)
-      .expect((res) =>
       .end(done);
 
       // (err, res) =>
